@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Heart, ChevronLeft, ChevronRight, Star } from 'lucide-react';
-import { Listing } from '../../features/listing/types/listing.types';
+import type { Listing } from '../../features/listing/types/listing.types';
 import { formatPrice } from '../../utils/formatPrice';
 
 interface ListingCardProps {
