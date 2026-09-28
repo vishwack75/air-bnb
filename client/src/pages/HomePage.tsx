@@ -9,9 +9,17 @@ export const HomePage: React.FC = () => {
 
   const listings = data?.listings || [];
 
-  // Group listings by city/region
-  const puneListings = listings.filter((l) => l.city?.toLowerCase() === 'pune') || [];
-  const otherListings = listings.filter((l) => l.city?.toLowerCase() !== 'pune') || [];
+  // Group listings dynamically by city
+  const groupedByCity = listings.reduce<Record<string, typeof listings>>((acc, listing) => {
+    const cityName = listing.city || 'Featured Places';
+    if (!acc[cityName]) {
+      acc[cityName] = [];
+    }
+    acc[cityName].push(listing);
+    return acc;
+  }, {});
+
+  const cityEntries = Object.entries(groupedByCity);
 
   if (isLoading) {
     return (
@@ -48,19 +56,13 @@ export const HomePage: React.FC = () => {
 
   return (
     <PageContainer className="py-6 space-y-8">
-      {/* Places to stay in Pune section matching screenshot */}
-      <ListingCarouselSection
-        title="Places to stay in Pune"
-        listings={puneListings.length > 0 ? puneListings : listings}
-      />
-
-      {/* Additional Featured Destinations */}
-      {otherListings.length > 0 && (
+      {cityEntries.map(([cityName, cityListings]) => (
         <ListingCarouselSection
-          title="Featured Stays Worldwide"
-          listings={otherListings}
+          key={cityName}
+          title={`Places to stay in ${cityName}`}
+          listings={cityListings}
         />
-      )}
+      ))}
     </PageContainer>
   );
 };
