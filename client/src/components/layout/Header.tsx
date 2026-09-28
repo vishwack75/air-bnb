@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Search, Globe, Menu, User as UserIcon, HelpCircle, LogOut, LogIn } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { User as UserType } from '../../types/common.types';
+import logoImg from '../../assets/logo.jpg';
 import { DestinationDropdown } from '../search/DestinationDropdown';
 import { DatePickerDropdown } from '../search/DatePickerDropdown';
 import { GuestDropdown } from '../search/GuestDropdown';
@@ -47,17 +48,12 @@ export const Header: React.FC<HeaderProps> = ({ user, onOpenAuth, onLogout }) =>
         {/* Top Row: Logo, Central Category Tabs, User Menu */}
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2 text-airbnb-red hover:opacity-90 transition">
-            <svg
-              className="h-8 w-auto fill-current text-airbnb-red"
-              viewBox="0 0 32 32"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-              role="presentation"
-              focusable="false"
-            >
-              <path d="M16 1c2.008 0 3.463.963 4.751 3.269l.533 1.025c1.954 3.83 6.114 12.54 7.1 14.836l.145.353c.667 1.591.91 2.472.96 3.396l.011.315c0 4.308-3.292 7.806-7.5 7.806-3.116 0-5.746-1.89-6.9-4.577l-.1-.247-.1-.247C13.746 29.81 11.116 31.7 8 31.7 3.792 31.7.5 28.202.5 23.894c0-.924.243-1.805.91-3.396l.145-.353c.986-2.296 5.146-11.006 7.1-14.836l.533-1.025C10.537 1.963 11.992 1 14 1zm0 2c-1.24 0-2.274.636-3.332 2.534l-.454.877c-1.921 3.766-6.04 12.408-7.011 14.673l-.128.31c-.571 1.36-.775 2.072-.815 2.802l-.01.298c0 3.208 2.455 5.806 5.5 5.806 2.51 0 4.686-1.633 5.378-4.045l.082-.319.144-.576.144.576c.692 2.412 2.868 4.045 5.378 4.045 3.045 0 5.5-2.598 5.5-5.806 0-.73-.204-1.442-.815-2.802l-.128-.31c-.971-2.265-5.09-10.907-7.011-14.673l-.454-.877C18.274 3.636 17.24 3 16 3zm0 15c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3zm0 2c-.552 0-1 .448-1 1s.448 1 1 1 1-.448 1-1-.448-1-1-1z" />
-            </svg>
+          <a href="/" className="flex items-center gap-2 hover:opacity-90 transition">
+            <img 
+              src={logoImg} 
+              alt="Airbnb" 
+              className="h-8 w-auto object-contain mix-blend-multiply" 
+            />
             <span className="font-bold text-xl tracking-tight hidden md:inline text-airbnb-red">airbnb</span>
           </a>
 
@@ -242,11 +238,15 @@ export const Header: React.FC<HeaderProps> = ({ user, onOpenAuth, onLogout }) =>
                 e.stopPropagation();
                 handleSearch();
               }}
-              className="bg-airbnb-red hover:bg-airbnb-darkRed text-white px-5 py-3.5 rounded-full shadow-md transition active:scale-95 flex items-center justify-center gap-2 shrink-0 z-10"
+              className={`bg-airbnb-red hover:bg-airbnb-darkRed text-white rounded-full shadow-md transition-all duration-300 active:scale-95 flex items-center justify-center shrink-0 z-10 ${
+                activeDropdown || searchLocation || totalGuests > 0 ? 'px-5 py-3.5 gap-2' : 'w-[52px] h-[52px]'
+              }`}
               aria-label="Search"
             >
-              <Search size={18} strokeWidth={2.5} />
-              <span className="font-semibold text-sm">Search</span>
+              <Search size={18} strokeWidth={3} />
+              {(activeDropdown || searchLocation || totalGuests > 0) && (
+                <span className="font-semibold text-sm">Search</span>
+              )}
             </button>
             <GuestDropdown 
               isOpen={activeDropdown === 'who'} 
