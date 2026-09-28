@@ -6,6 +6,8 @@ export interface User {
   createdAt?: string;
 }
 
+export type IUser = User;
+
 export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;

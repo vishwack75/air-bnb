@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Search, Globe, Menu, User, LogOut, LogIn } from 'lucide-react';
-import type { IUser } from '../../types';
+import { Search, Globe, Menu, User as UserIcon, LogOut, LogIn } from 'lucide-react';
+import type { User as UserType } from '../../types/common.types';
 
 interface HeaderProps {
-  user: IUser | null;
+  user: UserType | null;
   onOpenAuth: () => void;
   onLogout: () => void;
 }
@@ -14,7 +14,6 @@ export const Header: React.FC<HeaderProps> = ({ user, onOpenAuth, onLogout }) =>
   return (
     <header className="sticky top-0 z-30 bg-white border-b border-gray-200">
       <div className="max-w-[1280px] mx-auto px-6 h-20 flex items-center justify-between">
-        {/* Logo */}
         <a href="/" className="flex items-center gap-2 text-airbnb-red hover:opacity-90 transition">
           <svg
             className="h-8 w-auto fill-current"
@@ -29,7 +28,6 @@ export const Header: React.FC<HeaderProps> = ({ user, onOpenAuth, onLogout }) =>
           <span className="font-bold text-xl tracking-tight hidden md:inline text-airbnb-red">airbnb</span>
         </a>
 
-        {/* Compact Search Bar */}
         <div className="hidden sm:flex items-center border border-gray-300 rounded-full py-2 px-4 shadow-sm hover:shadow-md transition duration-200 cursor-pointer divide-x divide-gray-200 text-sm font-medium">
           <button className="px-3 hover:text-black text-gray-800 font-semibold">Anywhere</button>
           <button className="px-3 hover:text-black text-gray-800 font-semibold">Any week</button>
@@ -41,7 +39,6 @@ export const Header: React.FC<HeaderProps> = ({ user, onOpenAuth, onLogout }) =>
           </div>
         </div>
 
-        {/* User Navigation / Profile Menu */}
         <div className="flex items-center gap-3 relative">
           <button className="hidden md:block text-sm font-semibold hover:bg-gray-100 py-2 px-4 rounded-full transition">
             Airbnb your home
@@ -61,12 +58,11 @@ export const Header: React.FC<HeaderProps> = ({ user, onOpenAuth, onLogout }) =>
                 <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full object-cover" />
               ) : (
                 <div className="bg-gray-500 text-white rounded-full p-1">
-                  <User size={18} />
+                  <UserIcon size={18} />
                 </div>
               )}
             </button>
 
-            {/* Dropdown Menu */}
             {isMenuOpen && (
               <div className="absolute right-0 mt-2 w-60 bg-white rounded-xl shadow-modal border border-gray-200 py-2 z-50 text-sm">
                 {user ? (
