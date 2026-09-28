@@ -8,6 +8,11 @@ export const listingApi = {
     return response.data;
   },
 
+  getCities: async (): Promise<ApiResponse<{ city: string; country: string; count: number }[]>> => {
+    const response = await apiClient.get('/listings/cities');
+    return response.data;
+  },
+
   getListingById: async (id: string): Promise<ApiResponse<Listing>> => {
     const response = await apiClient.get(`/listings/${id}`);
     return response.data;

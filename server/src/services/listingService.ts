@@ -34,6 +34,10 @@ export class ListingService {
     }
     return listing;
   }
+
+  async getCities() {
+    return listingRepository.getDistinctCities();
+  }
 }
 
 export const listingService = new ListingService();

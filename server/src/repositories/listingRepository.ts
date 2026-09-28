@@ -77,6 +77,14 @@ export class ListingRepository {
       reviewCount: newCount,
     }).exec();
   }
+
+  async getDistinctCities(): Promise<{ city: string; country: string; count: number }[]> {
+    return Listing.aggregate([
+      { $group: { _id: { city: '$city', country: '$country' }, count: { $sum: 1 } } },
+      { $project: { _id: 0, city: '$_id.city', country: '$_id.country', count: 1 } },
+      { $sort: { count: -1 } },
+    ]);
+  }
 }
 
 export const listingRepository = new ListingRepository();

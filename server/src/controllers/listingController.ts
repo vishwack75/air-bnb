@@ -29,3 +29,8 @@ export const deleteListing = asyncHandler(async (req: Request, res: Response) =>
   await listingService.deleteListing(req.params.id);
   return sendResponse(res, 200, null, 'Listing deleted successfully');
 });
+
+export const getCities = asyncHandler(async (_req: Request, res: Response) => {
+  const cities = await listingService.getCities();
+  return sendResponse(res, 200, cities);
+});

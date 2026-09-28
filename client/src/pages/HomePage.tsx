@@ -1,11 +1,16 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { PageContainer } from '../components/layout/PageContainer';
 import { ListingCarouselSection } from '../components/listing/ListingCarouselSection';
 import { useListings } from '../features/listing/hooks/useListings';
 import { Skeleton } from '../components/common/Skeleton';
 
 export const HomePage: React.FC = () => {
-  const { data, isLoading, isError, error } = useListings();
+  const [searchParams] = useSearchParams();
+  const city = searchParams.get('city') || undefined;
+  const guests = searchParams.get('guests') ? parseInt(searchParams.get('guests') as string, 10) : undefined;
+
+  const { data, isLoading, isError, error } = useListings({ city, guests });
 
   const listings = data?.listings || [];
 
@@ -56,10 +61,17 @@ export const HomePage: React.FC = () => {
 
   return (
     <PageContainer className="py-6 space-y-8">
+      {cityEntries.length === 0 && !isLoading && !isError && (
+        <div className="py-20 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">No exact matches</h2>
+          <p className="text-gray-500">Try changing your search destination or guest count.</p>
+        </div>
+      )}
+      
       {cityEntries.map(([cityName, cityListings]) => (
         <ListingCarouselSection
           key={cityName}
-          title={`Places to stay in ${cityName}`}
+          title={city ? `Stays in ${cityName}` : `Places to stay in ${cityName}`}
           listings={cityListings}
         />
       ))}

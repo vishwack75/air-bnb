@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Search, Globe, Menu, User as UserIcon, HelpCircle, LogOut, LogIn } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { User as UserType } from '../../types/common.types';
+import { DestinationDropdown } from '../search/DestinationDropdown';
+import { DatePickerDropdown } from '../search/DatePickerDropdown';
+import { GuestDropdown } from '../search/GuestDropdown';
 
 interface HeaderProps {
   user: UserType | null;
@@ -9,9 +13,33 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ user, onOpenAuth, onLogout }) => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  
   const [activeCategory, setActiveCategory] = useState<'homes' | 'experiences' | 'services'>('homes');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchLocation, setSearchLocation] = useState('');
+  const [searchLocation, setSearchLocation] = useState(searchParams.get('city') || '');
+  
+  const initialGuests = parseInt(searchParams.get('guests') || '0', 10);
+  const [guests, setGuests] = useState({
+    adults: initialGuests > 0 ? initialGuests : 0,
+    children: 0,
+    infants: 0,
+    pets: 0,
+  });
+
+  const [activeDropdown, setActiveDropdown] = useState<'where' | 'when' | 'who' | null>(null);
+
+  const totalGuests = guests.adults + guests.children;
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (searchLocation) params.set('city', searchLocation);
+    if (totalGuests > 0) params.set('guests', totalGuests.toString());
+    
+    navigate(`/?${params.toString()}`);
+    setActiveDropdown(null);
+  };
 
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-gray-200">
@@ -161,37 +189,80 @@ export const Header: React.FC<HeaderProps> = ({ user, onOpenAuth, onLogout }) =>
         </div>
 
         {/* Large Expanded Search Bar */}
-        <div className="mt-6 max-w-3xl mx-auto bg-white border border-gray-300 rounded-full shadow-md hover:shadow-lg transition duration-200 p-2 flex items-center divide-x divide-gray-200">
-          <div className="flex-1 px-6 py-2 cursor-pointer hover:bg-gray-100/70 rounded-full transition">
-            <label className="block text-[11px] font-bold uppercase text-gray-900 tracking-wider">Where</label>
+        <div className="mt-6 max-w-3xl mx-auto relative flex items-center bg-gray-100/60 rounded-full border border-gray-300">
+          
+          <div 
+            onClick={() => setActiveDropdown('where')}
+            className={`flex-1 px-8 py-3.5 cursor-pointer rounded-full transition relative ${activeDropdown === 'where' ? 'bg-white shadow-[0_8px_28px_rgba(0,0,0,0.28)]' : 'hover:bg-gray-200'}`}
+          >
+            <label className="block text-[11px] font-bold text-gray-900 tracking-wider">Where</label>
             <input
               type="text"
               value={searchLocation}
               onChange={(e) => setSearchLocation(e.target.value)}
               placeholder="Search destinations"
-              className="w-full bg-transparent text-sm text-gray-800 placeholder-gray-400 outline-none font-medium"
+              className="w-full bg-transparent text-sm text-gray-800 placeholder-gray-500 outline-none font-medium truncate"
+            />
+            <DestinationDropdown 
+              isOpen={activeDropdown === 'where'} 
+              searchQuery={searchLocation} 
+              onSelect={(city) => {
+                setSearchLocation(city);
+                setActiveDropdown('when');
+              }} 
             />
           </div>
 
-          <div className="flex-1 px-6 py-2 cursor-pointer hover:bg-gray-100/70 rounded-full transition hidden sm:block">
-            <label className="block text-[11px] font-bold uppercase text-gray-900 tracking-wider">When</label>
-            <span className="text-sm font-semibold text-gray-800">7 Jul - 18 Jul</span>
+          <div className="w-px h-8 bg-gray-300"></div>
+
+          <div 
+            onClick={() => setActiveDropdown('when')}
+            className={`flex-1 px-8 py-3.5 cursor-pointer rounded-full transition relative hidden sm:block ${activeDropdown === 'when' ? 'bg-white shadow-[0_8px_28px_rgba(0,0,0,0.28)]' : 'hover:bg-gray-200'}`}
+          >
+            <label className="block text-[11px] font-bold text-gray-900 tracking-wider">When</label>
+            <span className="text-sm font-medium text-gray-500 truncate block">Add dates</span>
+            <DatePickerDropdown isOpen={activeDropdown === 'when'} onClose={() => setActiveDropdown('who')} />
           </div>
 
-          <div className="flex-1 px-6 py-2 cursor-pointer hover:bg-gray-100/70 rounded-full transition flex items-center justify-between">
-            <div>
-              <label className="block text-[11px] font-bold uppercase text-gray-900 tracking-wider">Who</label>
-              <span className="text-sm font-medium text-gray-500">Add guests</span>
+          <div className="w-px h-8 bg-gray-300 hidden sm:block"></div>
+
+          <div 
+            onClick={() => setActiveDropdown('who')}
+            className={`flex-[1.2] px-8 py-3.5 cursor-pointer rounded-full transition relative flex items-center justify-between ${activeDropdown === 'who' ? 'bg-white shadow-[0_8px_28px_rgba(0,0,0,0.28)]' : 'hover:bg-gray-200'}`}
+          >
+            <div className="flex-1 truncate pr-4">
+              <label className="block text-[11px] font-bold text-gray-900 tracking-wider">Who</label>
+              <span className={`text-sm font-medium truncate block ${totalGuests > 0 ? 'text-gray-900' : 'text-gray-500'}`}>
+                {totalGuests > 0 ? `${totalGuests} guest${totalGuests !== 1 ? 's' : ''}` : 'Add guests'}
+              </span>
             </div>
 
             <button
-              className="bg-airbnb-red hover:bg-airbnb-darkRed text-white p-3.5 rounded-full shadow-md transition active:scale-95 flex items-center justify-center ml-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSearch();
+              }}
+              className="bg-airbnb-red hover:bg-airbnb-darkRed text-white px-5 py-3.5 rounded-full shadow-md transition active:scale-95 flex items-center justify-center gap-2 shrink-0 z-10"
               aria-label="Search"
             >
               <Search size={18} strokeWidth={2.5} />
+              <span className="font-semibold text-sm">Search</span>
             </button>
+            <GuestDropdown 
+              isOpen={activeDropdown === 'who'} 
+              guests={guests} 
+              updateGuestCount={(type, val) => setGuests(prev => ({ ...prev, [type]: val }))} 
+            />
           </div>
         </div>
+
+        {/* Overlay to close dropdowns */}
+        {activeDropdown && (
+          <div 
+            className="fixed inset-0 top-[180px] z-30"
+            onClick={() => setActiveDropdown(null)}
+          ></div>
+        )}
       </div>
     </header>
   );
