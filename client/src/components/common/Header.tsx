@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Globe, Menu, User, LogOut, LogIn } from 'lucide-react';
-import { IUser } from '../../types';
+import type { IUser } from '../../types';
 
 interface HeaderProps {
   user: IUser | null;

@@ -1,14 +1,17 @@
-import './index.css'
+import React from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter } from 'react-router-dom';
+import { queryClient } from './services/queryClient';
+import { AppRoutes } from './routes/AppRoutes';
 
-function App() {
+export const App: React.FC = () => {
   return (
-    <>
-      <div className="App"></div>
-        <h1 className="text-red-500 text-3xl font-bold underline">
-          Hello world!
-        </h1>
-    </>
-  )
-}
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+};
 
-export default App
+export default App;

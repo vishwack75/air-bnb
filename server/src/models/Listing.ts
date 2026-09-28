@@ -48,6 +48,7 @@ const ListingSchema = new Schema<ListingDocument>(
     cleaningFee: { type: Number, default: 0 },
     serviceFee: { type: Number, default: 0 },
     available: { type: Boolean, default: true },
+    isGuestFavorite: { type: Boolean, default: true },
   },
   {
     timestamps: true,

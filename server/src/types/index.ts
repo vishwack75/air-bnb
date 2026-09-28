@@ -50,6 +50,7 @@ export interface IListing {
   cleaningFee: number;
   serviceFee: number;
   available: boolean;
+  isGuestFavorite?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

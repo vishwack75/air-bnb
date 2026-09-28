@@ -1,69 +1,76 @@
 import React from 'react';
-import { Globe } from 'lucide-react';
+import { Globe, Facebook, Instagram } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-100 border-t border-gray-200 mt-16 text-sm text-gray-700">
-      <div className="max-w-[1280px] mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8 border-b border-gray-200">
+    <footer className="bg-[#f7f7f7] border-t border-gray-200 mt-auto text-sm text-gray-700">
+      <div className="max-w-[1280px] mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 border-b border-gray-200">
         <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Support</h3>
-          <ul className="space-y-2.5 text-gray-600">
+          <h3 className="font-semibold text-gray-900 mb-4">Support</h3>
+          <ul className="space-y-3 text-gray-600">
             <li><a href="#" className="hover:underline">Help Center</a></li>
             <li><a href="#" className="hover:underline">AirCover</a></li>
             <li><a href="#" className="hover:underline">Anti-discrimination</a></li>
             <li><a href="#" className="hover:underline">Disability support</a></li>
             <li><a href="#" className="hover:underline">Cancellation options</a></li>
+            <li><a href="#" className="hover:underline">Report neighborhood concern</a></li>
           </ul>
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Hosting</h3>
-          <ul className="space-y-2.5 text-gray-600">
+          <h3 className="font-semibold text-gray-900 mb-4">Hosting</h3>
+          <ul className="space-y-3 text-gray-600">
             <li><a href="#" className="hover:underline">Airbnb your home</a></li>
             <li><a href="#" className="hover:underline">AirCover for Hosts</a></li>
             <li><a href="#" className="hover:underline">Hosting resources</a></li>
             <li><a href="#" className="hover:underline">Community forum</a></li>
             <li><a href="#" className="hover:underline">Hosting responsibly</a></li>
+            <li><a href="#" className="hover:underline">Airbnb-friendly apartments</a></li>
           </ul>
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Airbnb</h3>
-          <ul className="space-y-2.5 text-gray-600">
+          <h3 className="font-semibold text-gray-900 mb-4">Airbnb</h3>
+          <ul className="space-y-3 text-gray-600">
             <li><a href="#" className="hover:underline">Newsroom</a></li>
             <li><a href="#" className="hover:underline">New features</a></li>
             <li><a href="#" className="hover:underline">Careers</a></li>
             <li><a href="#" className="hover:underline">Investors</a></li>
             <li><a href="#" className="hover:underline">Gift cards</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="font-semibold text-gray-900 mb-3">Community</h3>
-          <ul className="space-y-2.5 text-gray-600">
-            <li><a href="#" className="hover:underline">Airbnb.org disaster relief</a></li>
-            <li><a href="#" className="hover:underline">Combating discrimination</a></li>
+            <li><a href="#" className="hover:underline">Airbnb.org emergency stays</a></li>
           </ul>
         </div>
       </div>
 
-      <div className="max-w-[1280px] mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-600">
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="max-w-[1280px] mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-600">
+        <div className="flex flex-wrap items-center justify-center md:justify-start gap-1">
           <span>© 2026 Airbnb, Inc.</span>
-          <span>·</span>
+          <span className="mx-1">·</span>
           <a href="#" className="hover:underline">Privacy</a>
-          <span>·</span>
+          <span className="mx-1">·</span>
           <a href="#" className="hover:underline">Terms</a>
-          <span>·</span>
+          <span className="mx-1">·</span>
           <a href="#" className="hover:underline">Sitemap</a>
-          <span>·</span>
-          <a href="#" className="hover:underline">Company details</a>
+          <span className="mx-1">·</span>
+          <a href="#" className="hover:underline">UK Modern Slavery Act</a>
         </div>
 
-        <div className="flex items-center gap-6 font-semibold text-gray-900">
-          <div className="flex items-center gap-2 cursor-pointer hover:underline">
+        <div className="flex flex-wrap items-center justify-center gap-4 font-semibold text-gray-900">
+          <button type="button" className="flex items-center gap-2 hover:underline">
             <Globe size={16} />
             <span>English (US)</span>
-          </div>
-          <div className="cursor-pointer hover:underline">
-            <span>$ USD</span>
+          </button>
+          <button type="button" className="hover:underline">
+            $ USD
+          </button>
+          <div className="flex items-center gap-4 text-gray-800">
+            <a href="#" aria-label="Facebook" className="hover:opacity-70">
+              <Facebook size={18} />
+            </a>
+            <a href="#" aria-label="X" className="hover:opacity-70 font-bold text-base leading-none">
+              𝕏
+            </a>
+            <a href="#" aria-label="Instagram" className="hover:opacity-70">
+              <Instagram size={18} />
+            </a>
           </div>
         </div>
       </div>

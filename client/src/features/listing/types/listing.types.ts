@@ -1,4 +1,4 @@
-export interface IHost {
+export interface Host {
   name: string;
   avatar: string;
   isSuperhost: boolean;
@@ -7,14 +7,14 @@ export interface IHost {
   responseTime?: string;
 }
 
-export interface IAmenity {
+export interface Amenity {
   name: string;
   category: string;
   icon: string;
   description?: string;
 }
 
-export interface IListing {
+export interface Listing {
   _id: string;
   title: string;
   location: string;
@@ -24,12 +24,12 @@ export interface IListing {
   longitude: number;
   propertyType: string;
   description: string;
-  host: IHost;
+  host: Host;
   guests: number;
   bedrooms: number;
   beds: number;
   bathrooms: number;
-  amenities: IAmenity[];
+  amenities: Amenity[];
   images: string[];
   rating: number;
   reviewCount: number;
@@ -42,35 +42,15 @@ export interface IListing {
   updatedAt: string;
 }
 
-export interface IReview {
-  _id: string;
-  listing: string;
-  user?: string;
-  authorName: string;
-  authorAvatar: string;
-  rating: number;
-  comment: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface IUser {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  createdAt?: string;
-}
-
-export interface ApiResponse<T = any> {
-  success: boolean;
-  message?: string;
-  data: T;
-  pagination?: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-  errors?: any[];
+export interface ListingQueryParams {
+  city?: string;
+  country?: string;
+  propertyType?: string;
+  guests?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  minRating?: number;
+  page?: number;
+  limit?: number;
+  sort?: 'price_asc' | 'price_desc' | 'rating_desc' | 'newest';
 }
